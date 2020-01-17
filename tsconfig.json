@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "outDir": "./build",
+    "lib": [ "es6" ],
+    "types": ["node", "mocha"],
+    "typeRoots": ["node_modules/@types"],
+    "suppressImplicitAnyIndexErrors": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+  },
+  "files": [
+    "index.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}
