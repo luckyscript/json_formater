@@ -42,9 +42,13 @@ export default class Parser {
       current: this.current,
     }
   }
+
+  private token() {
+    return this.input[this.pointer];
+  }
   
   public parse(input: string) {
-    switch(this.current) {
+    switch(this.token()) {
       case '{':
         return this.parseObject();
       case '[':
@@ -58,12 +62,12 @@ export default class Parser {
     const start: number = this.pointer;
     let children: Array<AstTree> = [];
     const keymarkerSet = ['"', "'", 'ﾌ'];
-    if (this.current !== '{') {
-      throw new Error (`unknown objectlike type near ${this.current}`);
+    if (this.token() !== '{') {
+      throw new Error (`unknown objectlike type near ${this.token()}`);
     }
     this.next();
     // @ts-ignore 
-    if (this.current === '}') {
+    if (this.token() === '}') {
       return {
         value: '{}',
         type,
@@ -73,17 +77,16 @@ export default class Parser {
     }
     for (;;) {
       let key;
-      if (keymarkerSet.includes(this.current)) {
-        key = this.parseKey(this.current);
+      if (keymarkerSet.includes(this.token())) {
+        key = this.parseKey(this.token());
         this.next();
       } else {
-        throw new Error(`unknow objectlike type near ${this.current}`);
-      }
-      // @ts-ignore 
-      if (this.current === ':') {
+        throw new Error(`unknow objectlike type near ${this.token()}`);
+      } 
+      if (this.token() === ':') {
         this.next();
       } else {
-        throw new Error(`unknow objectlike type near ${this.current}`);
+        throw new Error(`unknow objectlike type near ${this.token()}`);
       }
       const valueAST: Ast = this.parseValue();
       const tree = {
@@ -92,14 +95,12 @@ export default class Parser {
       }
       children.push(tree);
 
-      this.next();
-      // @ts-ignore 
-      if (this.current === ',') {
+      this.next(); 
+      if (this.token() === ',') {
         this.next();
         continue;
-      }
-      // @ts-ignore 
-      if (this.current === '}') {
+      } 
+      if (this.token() === '}') {
         break;
       }
     }
@@ -118,8 +119,8 @@ export default class Parser {
     return value;
   }
   public parseArray(): Ast {
-    if (this.current !== '[') {
-      throw new Error(`current input is not a array type, near ${this.current}`);
+    if (this.token() !== '[') {
+      throw new Error(`current input is not a array type, near ${this.token()}`);
     }
     const start = this.pointer;
     const type = JSONType.Array;
@@ -128,7 +129,7 @@ export default class Parser {
     
     this.next()
     // @ts-ignore
-    if (this.current === ']') {
+    if (this.token() === ']') {
       return {
         value: '[]',
         type,
@@ -145,13 +146,11 @@ export default class Parser {
       key++;
       children.push(tree);
       this.next();
-      // @ts-ignore
-      if (this.current === ',') {
+      if (this.token() === ',') {
         this.next()
         continue;
       }
-      // @ts-ignore
-      if (this.current === ']') {
+      if (this.token() === ']') {
         break;
       }
     }
@@ -162,92 +161,38 @@ export default class Parser {
       children,
       length,
     }
-    // this.next();
-    // // @ts-ignore
-    // if (this.current === ']') {
-    //   return {
-    //     value: '[]',
-    //     type,
-    //     length: this.pointer - start + 1,
-    //   }
-    // }
-    // for(let depth = 1; depth != 0; this.next()) {
-    //   // @ts-ignore
-    //   if (this.current === ',') {
-    //     continue;
-    //   }
-    //   if (this.current === '[') {
-    //     depth++;
-    //   }
-    //   // @ts-ignore
-    //   if (this.current === ']') {
-    //     depth--;
-    //   }
-
-    //   // @ts-ignore
-    //   if(this.current !== ']') {
-    //     let tree: AstTree = {
-    //       key: '',
-    //       value: '',
-    //       children: [],
-    //       type: JSONType.Object
-    //     };
-    //     console.log(this.current, this.pointer)
-    //     const valueAST: Ast = this.parseValue();
-    //     console.log(valueAST, 'valueAST')
-    //     if(valueAST.type === JSONType.Object) {
-    //       tree.children = valueAST.children;
-    //     } else {
-    //       tree.value = valueAST.value;
-    //       tree.children = valueAST.children || [];
-    //     }
-    //     tree.type = valueAST.type;
-    //     tree.key = key.toString();
-    //     children.push(tree);
-    //     key++;
-    //   }
-    // }
-    // const length = this.pointer - start;
-    // this.back();
-    // return {
-    //   value: this.input.substr(start, length),
-    //   children,
-    //   type: JSONType.Array,
-    //   length,
-    // }
   }
   public parseNumber(): Ast {
     const start = this.pointer;
     const type = JSONType.Number;
-    if (this.current === '-') {
+    if (this.token() === '-') {
       this.next();
     }
-    if (this.current === '0') {
+    if (this.token() === '0') {
       this.next();
     } else {
-      if (!isDigit1to9(this.current)) {
-        throw new Error(`unsupport number type near ${this.current}`);
+      if (!isDigit1to9(this.token())) {
+        throw new Error(`unsupport number type near ${this.token()}`);
       }
-      for(this.next();isDigit(this.current);this.next());
+      for(this.next();isDigit(this.token());this.next());
     }
-    if (this.current === '.') {
+    if (this.token() === '.') {
       this.next();
-      if (!isDigit(this.current)) {
-        throw new Error(`unsupport number type near ${this.current}`);
+      if (!isDigit(this.token())) {
+        throw new Error(`unsupport number type near ${this.token()}`);
       } else {
-        for(this.next();isDigit(this.current);this.next());
+        for(this.next();isDigit(this.token());this.next());
       }
     }
-    if (this.current === 'e' || this.current === 'E') {
+    if (this.token() === 'e' || this.token() === 'E') {
       this.next();
-      // @ts-ignore
-      if (this.current === '+' || this.current === '-') {
+      if (this.token() === '+' || this.token() === '-') {
         this.next();
       } else {
-        if (!isDigit(this.current)) {
-          throw new Error(`unsupport number type near ${this.current}`);
+        if (!isDigit(this.token())) {
+          throw new Error(`unsupport number type near ${this.token()}`);
         } else {
-          for(this.next();isDigit(this.current);this.next());
+          for(this.next();isDigit(this.token());this.next());
         }
       }
     }
@@ -263,21 +208,21 @@ export default class Parser {
     
   }
   public parseString(marker: string): Ast {
-    if (this.current === marker) {
+    if (this.token() === marker) {
       this.next();
     }
     const type = JSONType.String;
     const start = this.pointer;
     for (;;) {
-      if (this.current === marker) {
+      if (this.token() === marker) {
         break;
-      } else if (this.current !== '\\') {
+      } else if (this.token() !== '\\') {
         // any codepoint except marker or \ or control characters
         this.next();
         continue;
-      } else if (this.current === '\\') {
-        const { current } = this.next();
-        switch(current) {
+      } else if (this.token() === '\\') {
+        this.next();
+        switch(this.token()) {
           case marker:
             case '\\':
             case '/':
@@ -292,10 +237,10 @@ export default class Parser {
             break;
           case 'u':
             default:
-            throw new Error(`unknown string type near slash ${this.current}`);
+            throw new Error(`unknown string type near slash ${this.token()}`);
         }
       } else {
-        throw new Error(`unknown string type near ${this.current}`);
+        throw new Error(`unknown string type near ${this.token()}`);
       }
     }
     const length = this.pointer - start;
@@ -307,8 +252,8 @@ export default class Parser {
   }
   public parseLiteral(literalValue: string): Ast {
     for(let i = 0; i < literalValue.length; i++) {
-      if (this.current !== literalValue[i]) {
-        throw new Error(`unknow value near ${this.current}`);
+      if (this.token() !== literalValue[i]) {
+        throw new Error(`unknow value near ${this.token()}`);
       }
       this.next();
     }
@@ -338,7 +283,7 @@ export default class Parser {
     }
   }
   private parseValue() {
-    switch(this.current) {
+    switch(this.token()) {
       // true
       case 't':
         return this.parseLiteral('true');
@@ -371,7 +316,7 @@ export default class Parser {
       case '9':
         return this.parseNumber();
       default:
-        throw new Error(`unknown type near ${this.current}`)
+        throw new Error(`unknown type near ${this.token()}`)
     }
   }
 }
