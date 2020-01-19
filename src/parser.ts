@@ -6,7 +6,6 @@ export default class Parser {
   private current: string;
   private input: string;
   private length: number;
-  private stack: Array<string> = [];
 
   constructor(input: string) {
     this.input = input;
@@ -47,14 +46,14 @@ export default class Parser {
     return this.input[this.pointer];
   }
   
-  public parse(input: string) {
+  public parse() {
     switch(this.token()) {
       case '{':
         return this.parseObject();
       case '[':
         return this.parseArray();
       default:
-        throw new Error(`unsupport input: ${input}`);
+        throw new Error(`unsupport input: ${this.input}`);
     }
   }
   public parseObject(): Ast {

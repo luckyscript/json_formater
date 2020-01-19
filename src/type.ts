@@ -17,6 +17,13 @@ export interface AstTree {
   key: string|number;
   value: any;
   comment?: string;
+  length: number;
   children?: Array<AstTree>;
   type: JSONType;
+}
+
+// TODO: Tokens管理起来
+export enum Tokens {
+  LeftBrace = '{',
+  RightBrace = '}',
 }
