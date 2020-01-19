@@ -1,0 +1,18 @@
+language: node_js
+
+node_js:
+  - 8
+  - 6
+install:
+  - npm install
+jobs:
+  include:
+    - stage: release
+      node_js: lts/*
+      script: 
+        - npm test
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release

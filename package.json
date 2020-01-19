@@ -1,6 +1,6 @@
 {
-  "name": "format-json",
-  "version": "0.0.1",
+  "name": "@luckylab/json-formater",
+  "version": "0.0.0-development",
   "description": "",
   "main": "build/index.js",
   "files": [
@@ -9,20 +9,28 @@
   "types": "build/index.d.ts",
   "scripts": {
     "test": "npm run build && TS_NODE_TRANSPILE_ONLY=true TS_NODE_LOG_ERROR=true NODE_ENV=test mocha \"test/**/*.ts\"",
-    "build": "rm -rf built && tsc",
-    "prepublish": "npm run build && npm test"
+    "build": "rm -rf build && tsc",
+    "prepublish": "npm run build && npm test",
+    "semantic-release": "semantic-release"
   },
   "author": "luckyscript",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/debug": "^4.1.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.0.2",
-    "typescript": "^3.7.4",
-    "husky": "^2.5.0",
     "chai": "^4.2.0",
+    "husky": "^2.5.0",
     "mocha": "^5.0.0",
-    "ts-node": "^8.1.0"
+    "semantic-release": "^16.0.2",
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.12",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.7.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luckyscript/json_formater.git"
   }
 }

@@ -1,0 +1,29 @@
+{
+  "branch": "master",
+  "verifyConditions": [
+    "@semantic-release/changelog",
+    "@semantic-release/git"
+  ],
+  "prepare": [
+    {
+      "path": "@semantic-release/changelog",
+      "changelogFile": "Changelog.md"
+    },
+    {
+      "path": "@semantic-release/git",
+      "assets": [
+        "Changelog.md"
+      ]
+    }
+  ],
+  "publish": [],
+  "analyzeCommits": {
+    "preset": "angular",
+    "releaseRules": [
+      { "type": "minor", "release": "minor" },
+      { "type": "patch", "release": "patch" },
+      { "type": "major", "release": "major" },
+      { "type": "breaking", "release": "major" }
+    ]
+  }
+}
