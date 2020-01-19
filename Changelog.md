@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/luckyscript/json_formater/compare/v1.0.0...v1.1.0) (2020-01-19)
+
+
+### Features
+
+* change release pipeline ([6d565a1](https://github.com/luckyscript/json_formater/commit/6d565a1b22d2ba69f8f8b3ab63d21a0420ae6fed))
+
 # 1.0.0 (2020-01-19)
 
 
