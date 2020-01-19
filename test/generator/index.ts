@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { JSONType } from '../../src/type';
 import Generator from '../../src/generator';
 // import 'mocha';
-describe("array", function() {
+describe("generator", function() {
   it("should return array value correctly", function(done) {
     const generator = new Generator({
       value:"[{\"a\":\"b\", \"c\": \"d\"}]",
